@@ -21,6 +21,7 @@ seed.png
 
 # Media folder is tracked (showcase GIFs and images go here)
 !media/
+!media/**
 
 # Python
 __pycache__/
