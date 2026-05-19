@@ -61,7 +61,7 @@ VQ_EMBEDDING_DIM   = 32     # dimension of each codebook entry / encoder output 
 VQ_COMMITMENT_COST = 0.05  # higher early on to break VQ collapse; reduce to 0.05 once vq_uniq > 10   # weight on encoder commitment loss
 VQ_EMA_DECAY       = 0.9   # 0.9 → dead entry detected in ~7 steps; 0.99 → ~70 steps; 0.999 → ~700 steps
 
-FLICKR_DIR  = r"C:\Projects\Personal\Ouroboros\Conditioned\Images_30k\flickr30k_images"
+FLICKR_DIR  = r"data/images"   # set to your image folder
 MAX_IMAGES  = 100000      # set to an int (e.g. 5000) to cap dataset size
 NUM_WORKERS = 4
 

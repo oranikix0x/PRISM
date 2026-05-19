@@ -19,6 +19,9 @@ seed.png
 *.pth
 *.pt
 
+# Media folder is tracked (showcase GIFs and images go here)
+!media/
+
 # Python
 __pycache__/
 *.py[cod]

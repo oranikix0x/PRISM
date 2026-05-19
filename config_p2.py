@@ -9,11 +9,10 @@ from config import *   # noqa: F401, F403
 #
 # FRAME_SKIP — sample every Nth frame pair.  Use 1 for maximum density, or a
 # larger value to sub-sample fast-motion videos.
-# VIDEO_DIR        = r"C:\Projects\Personal\OIG\videos\train"
-VIDEO_DIR        = r"C:\Projects\Personal\OIG\videos\games\minecraft"
+VIDEO_DIR        = r"data/videos"          # set to your video folder
 # Pre-extracted JPEG frames (same ones used by Phase 3 — no need to re-extract).
 # Set to None to fall back to decoding raw video files via decord (slower).
-FRAMES_DIR       = r"C:\Projects\Personal\OIG\frames_p3_6fps_128px\minecraft"
+FRAMES_DIR       = r"data/frames_6fps_128px"   # output of preprocess_videos.py, or None
 PRIMITIVE = "mixed"
 FRAME_SKIP       = 1          # stride between consecutive frame pairs in JPEG index
 MAX_VIDEO_PAIRS  = 20000       # int to cap dataset size, None = use all

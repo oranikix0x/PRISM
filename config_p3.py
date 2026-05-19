@@ -41,15 +41,15 @@ FREEZE_LAM = False
 RESET_VQ_CODEBOOK = False
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-VIDEO_DIR        = r"C:\Projects\Personal\OIG\videos\games\minecraft"
+VIDEO_DIR        = r"data/videos"          # set to your video folder
 VIDEO_WORKERS    = 4
-FRAME_SKIP       = 10          # 60fps ÷ 10 = 6fps effective — matches motion visible to humans
-TRIM_START_SEC   = 120.0
-TRIM_END_SEC     = 120.0
+FRAME_SKIP       = 10          # 60fps ÷ 10 = 6fps effective — adjust to your video fps
+TRIM_START_SEC   = 0.0         # seconds to skip at start of each clip (intros)
+TRIM_END_SEC     = 0.0         # seconds to skip at end of each clip (outros)
 # Pre-extracted JPEG frames directory (fast mode).
-# Run:  python preprocess_videos.py --fps 6
+# Run:  python preprocess_videos.py --config p3 --fps 6 --size 128
 # Set to None to use decord directly on the raw video files (slower for long H.264).
-FRAMES_DIR = r"C:\Projects\Personal\OIG\frames_p3_6fps_128px"
+FRAMES_DIR = r"data/frames_6fps_128px"    # output of preprocess_videos.py, or None
 if PRIMITIVE == "mixed":
     P2_CHECKPOINT     = "checkpoints_p2/latest_mixed.pth"
 else:
