@@ -1,0 +1,33 @@
+# Large data — not tracked
+checkpoints/
+checkpoints_p2/
+checkpoints_p3/
+checkpoints_p3b/
+checkpoints_p4/
+frames*/
+videos/
+samples/
+samples_p2/
+samples_p3/
+samples_p3b/
+samples_p4/
+
+# Generated artifacts
+code_atlas.png
+code_atlas.json
+seed.png
+*.pth
+*.pt
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
