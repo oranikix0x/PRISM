@@ -1,5 +1,7 @@
 # PRISM — Primitive Rendering for Interactive Scene Modeling
 
+> **Note:** This is an early-stage research prototype; the goal is to explore structured object-centric world models, not to present a finished game engine.
+
 A research project building a controllable game world model from unlabelled video, using differentiable object-centric representations and unsupervised action discovery.
 
 | Phase | What it learns | Status |
@@ -10,6 +12,47 @@ A research project building a controllable game world model from unlabelled vide
 | **3b — Long-horizon** | Stable multi-step rollouts | ⏳ Pending P3 |
 | **4 — Multi-agent** | Consistent world state across two agents | 🔬 Future |
 | **5 — Language** | Text-conditioned world editing | 🔬 Future |
+
+### Design rationale
+
+Rather than predicting pixels directly, PRISM decomposes each frame into soft geometric primitives (circles and lines). A differentiable rasterizer converts these into an optical flow field; a UNet image reconstructor warps the previous frame by that flow and refines the result — separating *geometric structure* (primitives → flow) from *appearance* (warp + refinement). This inductive bias is intended to improve geometric coherence in rollouts. Action codes are discovered without supervision: a Latent Action Model encodes consecutive frame pairs into a discrete VQ code that conditions the slot transition model.
+
+### Pipeline
+
+```mermaid
+flowchart LR
+    ft(["frame_t"])
+    ft1(["frame_t+1"])
+
+    ft  --> O["O — ObjectGenerator"]
+    ft  --> LAM
+    ft1 --> LAM["LAM — LatentAction\nModel"]
+
+    O   --> slots["primitive slots\nparams_curr"]
+    LAM --> z["z_q_st\nVQ action code"]
+
+    slots --> N["N — SlotTransition"]
+    z     --> N
+    ft    --> N
+    N     --> delta["Δ slots"]
+
+    slots --> AD["apply_delta"]
+    delta --> AD
+    AD    --> pnext["params_next"]
+
+    slots --> R["Rasterizer"]
+    pnext --> R
+    R     --> flow["optical flow"]
+
+    ft   --> W["Warp"]
+    flow --> W
+    W    --> warped["warped frame"]
+
+    warped --> I["I — ImageReconstructor"]
+    flow   --> I
+    z      --> I
+    I      --> pred(["frame_t+1\npredicted"])
+```
 
 ---
 
