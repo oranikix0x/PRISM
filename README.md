@@ -69,13 +69,15 @@ Reading the atlas: rows with a uniform bright Δ across the whole frame are came
 
 ![Code atlas](media/code_atlas.png)
 
-### Action rollouts (Phase 3, step 164 200)
+### Action rollouts (Phase 3b, step 83 400)
 
 Each GIF shows the world model rolling out 8 steps under a fixed action code. Left column = primitive canvas (geometric structure), right column = reconstructed image. Each row is a different code from the atlas, sorted by real-world frequency. The null code (lam(frame, frame)) is always the first row.
 
-![Rollout group 0](media/rollout_0164200_g0.gif)
-![Rollout group 1](media/rollout_0164200_g1.gif)
-![Rollout group 2](media/rollout_0164200_g2.gif)
+![Rollout group 0](media/rollout_0083400_g0.gif)
+![Rollout group 1](media/rollout_0083400_g1.gif)
+![Rollout group 2](media/rollout_0083400_g2.gif)
+![Rollout group 3](media/rollout_0083400_g3.gif)
+![Rollout group 4](media/rollout_0083400_g4.gif)
 
 ---
 
