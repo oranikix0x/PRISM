@@ -67,8 +67,8 @@ args = parser.parse_args()
 KEY_TO_BIT: dict[int, int] = {
     ord('a'): 0,   ord('z'): 1,   ord('e'): 2,   ord('r'): 3,
     ord('t'): 4,   ord('y'): 5,   ord('u'): 6,   ord('i'): 7,
-    ord('o'): 8,   ord('p'): 9,   ord('^'): 10,  ord('$'): 11,
-    ord('q'): 12,  ord("d"): 13,  ord('f'): 14,  ord('g'): 15,
+    ord('o'): 8,   ord('p'): 9,   ord('g'): 10,  ord('h'): 11,
+    ord('j'): 12,  ord("k"): 13,  ord('l'): 14,  ord('m'): 15,
 }
 RESET_KEY  = ord('n')   # n = new seed
 SAVE_KEY   = ord('s')
@@ -106,6 +106,25 @@ def _cv_to_vk(cv_key: int) -> int | None:
 # bit → VK code for polling
 BIT_TO_VK:  dict[int, int] = {bit: vk for cv, bit in KEY_TO_BIT.items()
                                 if (vk := _cv_to_vk(cv)) is not None}
+
+
+def _poll_keys_until(deadline: float, special_keys: set[int]) -> int:
+    """
+    Wait until deadline via short waitKey(1) polls, then sleep any remainder.
+
+    Unlike waitKey(wait_ms), OS key-repeat on held keys does not return early,
+    so simulation speed stays independent of which keys are held.
+    """
+    key = 0
+    while time.time() < deadline:
+        k = cv2.waitKey(1) & 0xFF
+        if k in special_keys:
+            key = k
+            break
+    remaining = deadline - time.time()
+    if remaining > 0:
+        time.sleep(remaining)
+    return key
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 
@@ -401,8 +420,10 @@ if args.observe:
 
                 prev_frame    = frame
                 prev_frame_np = frame_np
-                elapsed = time.time() - t0
-                key = cv2.waitKey(max(1, int((frame_interval_obs - elapsed) * 1000))) & 0xFF
+                key = _poll_keys_until(
+                    t0 + frame_interval_obs,
+                    {ord('x'), ord('s'), ord(' ')},
+                )
                 if key == ord('x'):
                     _save_atlas()
                     cv2.destroyAllWindows()
@@ -559,9 +580,10 @@ with torch.no_grad():
             cv2.imshow(WIN2, combined2)
 
         # ── Key handling ──────────────────────────────────────────────────────
-        elapsed = time.time() - t_start
-        wait_ms = max(1, int((frame_interval - elapsed) * 1000))
-        key = cv2.waitKey(wait_ms) & 0xFF
+        key = _poll_keys_until(
+            t_start + frame_interval,
+            QUIT_KEYS | {RESET_KEY, SAVE_KEY},
+        )
 
         if key in QUIT_KEYS:
             break
